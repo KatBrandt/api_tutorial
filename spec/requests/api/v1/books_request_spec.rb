@@ -70,9 +70,7 @@ describe "Books API" do
       number_sold: 8389283
     }
 
-    headers = {
-      "CONTENT_TYPE" => "application/json"
-    }
+    headers = { "CONTENT_TYPE" => "application/json" }
 
     create_list(:book, 3)
 
@@ -87,5 +85,19 @@ describe "Books API" do
     expect(new_book.genre).to eq valid_attributes[:genre]
     expect(new_book.summary).to eq valid_attributes[:summary]
     expect(new_book.number_sold).to eq valid_attributes[:number_sold]
+  end
+
+  it 'updates an existing book' do
+    id = create(:book).id
+    previous_name = Book.last.title
+    new_attribute = { title: "Charlotte's Web"}
+    headers = { "CONTENT_TYPE" => "application/json" }
+
+    patch "/api/v1/books/#{id}", headers: headers, params: JSON.generate(new_attribute)
+
+    expect(response).to be_successful
+
+    changed_book = Book.find(id)
+    expect(changed_book.title).to eq new_attribute[:title]
   end
 end
