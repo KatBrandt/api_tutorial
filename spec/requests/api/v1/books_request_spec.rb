@@ -8,8 +8,28 @@ describe "Books API" do
 
     expect(response).to be_successful
 
-    books = JSON.parse(response.body)
+    books = JSON.parse(response.body, symbolize_names: true)
 
     expect(books.size).to eq 3
+
+    books.each do |book|
+      expect(book).to have_key :id
+      expect(book[:id]).to be_an Integer
+
+      expect(book).to have_key :title
+      expect(book[:title]).to be_a String
+
+      expect(book).to have_key :author
+      expect(book[:author]).to be_a String
+
+      expect(book).to have_key :genre
+      expect(book[:genre]).to be_a String
+
+      expect(book).to have_key :summary
+      expect(book[:summary]).to be_a String
+
+      expect(book).to have_key :number_sold
+      expect(book[:number_sold]).to be_an Integer
+    end
   end
 end
