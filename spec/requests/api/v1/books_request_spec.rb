@@ -60,4 +60,32 @@ describe "Books API" do
     expect(book).to have_key :number_sold
     expect(book[:number_sold]).to be_an Integer
   end
+
+  it 'can create a new book' do
+    valid_attributes = {
+      title: "The Shining",
+      author: "Stephen King",
+      genre: "Horror",
+      summary: Faker::Lorem.paragraph,
+      number_sold: 8389283
+    }
+
+    headers = {
+      "CONTENT_TYPE" => "application/json"
+    }
+
+    create_list(:book, 3)
+
+    post "/api/v1/books", headers: headers, params: JSON.generate(valid_attributes)
+
+    expect(response).to be_successful
+
+    new_book = Book.last
+
+    expect(new_book.title).to eq valid_attributes[:title]
+    expect(new_book.author).to eq valid_attributes[:author]
+    expect(new_book.genre).to eq valid_attributes[:genre]
+    expect(new_book.summary).to eq valid_attributes[:summary]
+    expect(new_book.number_sold).to eq valid_attributes[:number_sold]
+  end
 end
