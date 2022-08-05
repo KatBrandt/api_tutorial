@@ -12,6 +12,10 @@ class Api::V1::BooksController < ApplicationController
     Book.create(book_params)
   end
 
+  def update
+    Book.update(params[:id], book_params)
+  end
+
   private
 
   def book_params
