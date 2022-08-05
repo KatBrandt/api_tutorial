@@ -16,6 +16,10 @@ class Api::V1::BooksController < ApplicationController
     Book.update(params[:id], book_params)
   end
 
+  def destroy
+    Book.destroy(params[:id])
+  end
+
   private
 
   def book_params

@@ -100,4 +100,15 @@ describe "Books API" do
     changed_book = Book.find(id)
     expect(changed_book.title).to eq new_attribute[:title]
   end
+
+  it 'can delete a book by id' do
+    create_list(:book, 3)
+    id = Book.last.id
+
+    delete "/api/v1/books/#{id}"
+
+    expect(response).to be_successful
+    expect(Book.count).to eq 2
+    expect{ Book.find(id)}.to raise_error ActiveRecord::RecordNotFound
+  end
 end
